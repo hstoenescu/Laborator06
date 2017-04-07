@@ -60,6 +60,19 @@ public class ClientCommunicationThread extends Thread {
             PrintWriter requestPrintWriter = Utilities.getWriter(socket);
 
             // TODO exercise 7b
+            requestPrintWriter.append(wordEditText.getText());
+
+            String wordReceived = responseReader.readLine();
+            if (wordReceived.equals(Constants.END_GAME)) {
+                Log.d(Constants.TAG, "FINAL");
+            } else if (!wordReceived.equals(mostRecentWordSent)){
+                mostRecentValidPrefix = wordReceived.substring(wordReceived.length()-2);
+                wordEditText.setText(mostRecentValidPrefix);
+            } else if (wordReceived.equals(mostRecentWordSent)) {
+                wordEditText.setText(mostRecentValidPrefix);
+            } else {
+                wordEditText.setText("ERROR");
+            }
 
         } catch (IOException ioException) {
             Log.e(Constants.TAG, "An exception has occurred: " + ioException.getMessage());
